@@ -1,6 +1,13 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 # get_user_model returns a user model that is currently active in project
+from core import models
+
+
+# To use the same sample user for tests
+def sample_user(email='test@gmail.com', password='testpass'):
+    """Create a sample user"""
+    return get_user_model().objects.create_user(email, password)
 
 
 class ModelTests(TestCase):
@@ -43,3 +50,12 @@ class ModelTests(TestCase):
         # is_superuser is included in PermissionsMixin
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_tag_str(self):
+        """Test the tag sting representation"""
+        tag = models.Tag.objects.create(
+            user=sample_user(),
+            name='Vegan'
+        )
+
+        self.assertEqual(str(tag), tag.name)

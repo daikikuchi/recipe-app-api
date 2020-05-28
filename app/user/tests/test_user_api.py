@@ -130,6 +130,8 @@ class PrivateUserApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         # password is excluded on clientside for security reason
+        # print(res.data,'res.data')
+        # {'email': 'test@gmail.com', 'name': 'name'} res.data
         self.assertEqual(res.data, {
             'name': self.user.name,
             'email': self.user.email,
