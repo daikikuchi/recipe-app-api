@@ -9,6 +9,7 @@ from core.models import Tag
 
 from recipe.serializers import TagSerializer
 
+# ViewSet automatically appends the action name to the end of URL using router
 TAGS_URL = reverse('recipe:tag-list')
 
 
