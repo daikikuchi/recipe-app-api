@@ -27,3 +27,4 @@ admin.site.register(models.User, UserAdmin)
 # no need to specify TagAdmin, since we use the default one for the model
 admin.site.register(models.Tag)
 admin.site.register(models.Ingredient)
+admin.site.register(models.Recipe)
