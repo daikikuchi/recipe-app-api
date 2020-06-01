@@ -31,7 +31,6 @@ class PublicUserApiTests(TestCase):
         }
         res = self.client.post(CREATE_USER_URL, payload)
         # Test the respose is 201
-        print('HTTP_201_CREATED', status.HTTP_201_CREATED)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         # print('res.data',res.data)
         # res.data {'email': 'test@gmail.com', 'name': 'Test'}

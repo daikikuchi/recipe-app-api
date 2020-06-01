@@ -25,6 +25,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     """Serialize a recipe"""
     # list ingredients with their id,primary key
     # when we retrive full name of the ingredients, use detail detail API
+    # this only returns ID of the ingredients and tags associated to the recipe
     ingredients = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=Ingredient.objects.all()
@@ -43,3 +44,9 @@ class RecipeSerializer(serializers.ModelSerializer):
         # this is to prevent users from updating 'id' when they create and edit
         # and not to update primary key
         read_only_fields = ('id',)
+
+
+# Inherit from RecipeSerializer, the base of this class will be same as it
+class RecipeDetailSerializer(RecipeSerializer):
+    ingredients = IngredientSerializer(many=True, read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
