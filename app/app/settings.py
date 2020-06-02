@@ -124,7 +124,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+# When we upload media files, we have an accessible URL
+# so we can access them through our webserver
+# 127.0.0.1:8000/static
+# # 127.0.0.1:8000/media
+
+# Tell Django where to store all the media files
+MEDIA_ROOT = '/vol/web/media'
+# Tell Django where to store all the static fieldsets
+STATIC_ROOT = '/vol/web/static'
 
 AUTH_USER_MODEL = 'core.User'
