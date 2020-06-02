@@ -56,7 +56,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     # to retrive the serializer class for a particular request
     # ViewSet a number of actions available, list returns default
-    #  if action is retrieve, return the detail serializer
+    #  if action is retrieve, return detail serializer, instead of default one
     def get_serializer_class(self):
         """Return appropriate serializer class"""
         # action being used for our current request
@@ -64,3 +64,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return serializers.RecipeDetailSerializer
 
         return self.serializer_class
+
+    # Assigns the user of the created recipe to current autheticated user.
+    def perform_create(self, serializer):
+        """Create a new recipe"""
+        serializer.save(user=self.request.user)
