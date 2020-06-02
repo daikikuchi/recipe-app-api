@@ -24,7 +24,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     """Serialize a recipe"""
     # list ingredients with their id,primary key
-    # when we retrive full name of the ingredients, use detail detail API
+    # when we retrive full name of the ingredients, use detail API
     # this only returns ID of the ingredients and tags associated to the recipe
     ingredients = serializers.PrimaryKeyRelatedField(
         many=True,

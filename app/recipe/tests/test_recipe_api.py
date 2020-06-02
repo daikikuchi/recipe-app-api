@@ -78,7 +78,6 @@ class PrivateRecipeAPITests(TestCase):
         recipes = Recipe.objects.all().order_by('-id')
         # want to return the data as a list, so manyTrue
         serializer = RecipeSerializer(recipes, many=True)
-        print(serializer.data, 'serializer.data')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
@@ -173,3 +172,43 @@ class PrivateRecipeAPITests(TestCase):
         self.assertEqual(ingredients.count(), 2)
         self.assertIn(ingredient1, ingredients)
         self.assertIn(ingredient2, ingredients)
+
+    def test_partial_update_recipe(self):
+        """Test updating a recipe with patch"""
+        recipe = sample_recipe(user=self.user)
+        recipe.tags.add(sample_tag(self.user))
+        new_tag = sample_tag(user=self.user, name='Curry')
+
+        payload = {'title': 'Chicken tikka', 'tags': [new_tag.id]}
+        # Use detail URL to update
+        url = detail_url(recipe.id)
+        self.client.patch(url, payload)
+
+        # details of a created model instanc won't change unless reflesh
+        recipe.refresh_from_db()
+        self.assertEqual(recipe.title, payload['title'])
+        tags = recipe.tags.all()
+        self.assertEqual(len(tags), 1)
+        # check if new tag in tags from database
+        self.assertIn(new_tag, tags)
+
+    def tast_full_update_recipe(self):
+        """Test updating a recipe with put"""
+        recipe = sample_recipe(user=self.user)
+        recipe.tags.add(sample_tag(user=self.user))
+        payload = {
+            'title': 'Spagetti carbonara',
+            'time_minutes': 25,
+            'price': 5.00
+        }
+        url = detail_url(recipe.id)
+        self.client.put(url, payload)
+
+        recipe.refresh_from_db()
+        self.assertEqual(recipe.title, payload['title'])
+        self.assertEqual(recipe.time_minutes, payload['time_minutes'])
+        self.assertEqual(recipe.price, payload['price'])
+        # By put request, if we don't update a field, it get removed
+        # tag must be removed
+        tags = recipe.tags.all()
+        self.assertEqual(len(tags), 0)
