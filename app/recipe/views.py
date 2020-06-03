@@ -52,9 +52,28 @@ class RecipeViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
+    def _params_to_ints(self, qs):
+        """Convert a list of string IDs to a list of intergers"""
+        # our_string = '1,2,3'
+        # our_string_list = [1,2,3]
+        return [int(str_id) for str_id in qs.split(',')]
+
     def get_queryset(self):
         """Retrieve the recipes for the authenticated user"""
-        return self.queryset.filter(user=self.request.user)
+        # retrieve get parameters, query params is dictionary
+        tags = self.request.query_params.get('tags')
+        ingredients = self.request.query_params.get('ingredients')
+        # we do this not reassign our queryset
+        queryset = self.queryset
+        if tags:
+            tag_ids = self._params_to_ints(tags)
+            # First underscore is Django syntax for filtering on foreignKey
+            queryset = queryset.filter(tags__id__in=tag_ids)
+        if ingredients:
+            ingredient_ids = self._params_to_ints(ingredients)
+            queryset = queryset.filter(ingredients__id__in=ingredient_ids)
+
+        return queryset.filter(user=self.request.user)
 
     # to retrive the serializer class for a particular request
     # ViewSet a number of actions available, list returns default

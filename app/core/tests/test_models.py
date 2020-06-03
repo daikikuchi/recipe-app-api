@@ -94,6 +94,7 @@ class ModelTests(TestCase):
         # First parameter is the instance, no need to use it.
         # it is required by Django for the image field
         file_path = models.recipe_image_file_path(None, 'myimage.jpg')
+        # print(file_path) uploads/recipe/test-uuid.jpg
 
         exp_path = f'uploads/recipe/{uuid}.jpg'
         self.assertEqual(file_path, exp_path)
