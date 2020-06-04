@@ -285,7 +285,6 @@ class RecipeImageUploadTests(TestCase):
             RECIPES_URL,
             {'tags': '{},{}'.format(tag1.id, tag2.id)}
         )
-        print(res.data, 'res-tags')
         serializer1 = RecipeSerializer(recipe1)
         serializer2 = RecipeSerializer(recipe2)
         serializer3 = RecipeSerializer(recipe3)
@@ -307,7 +306,6 @@ class RecipeImageUploadTests(TestCase):
             RECIPES_URL,
             {'ingredients': '{},{}'.format(ingredient1.id, ingredient2.id)}
         )
-        print(res.data, 'res-ingredients')
 
         serializer1 = RecipeSerializer(recipe1)
         serializer2 = RecipeSerializer(recipe2)
